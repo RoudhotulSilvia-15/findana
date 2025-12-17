@@ -1,76 +1,99 @@
-import 'package:intl/intl.dart';
-
-enum TransactionType { income, expense }
-
-enum TransactionCategory {
-  salary('Gaji', TransactionType.income),
-  bonus('Bonus', TransactionType.income),
-  investment('Investasi', TransactionType.income),
-  otherIncome('Lainnya', TransactionType.income),
-  food('Makanan', TransactionType.expense),
-  transport('Transportasi', TransactionType.expense),
-  utilities('Listrik/Air', TransactionType.expense),
-  entertainment('Hiburan', TransactionType.expense),
-  shopping('Belanja', TransactionType.expense),
-  health('Kesehatan', TransactionType.expense),
-  education('Pendidikan', TransactionType.expense),
-  otherExpense('Lainnya', TransactionType.expense);
-
-  final String label;
-  final TransactionType type;
-  const TransactionCategory(this.label, this.type);
-}
-
-class Transaction {
-  final String id;
+abstract class Transaction {
+  final int? id;
   final double amount;
-  final TransactionCategory category;
-  final String description;
   final DateTime date;
+  final String description;
+  final int categoryId;
 
   Transaction({
-    String? id,
+    this.id,
     required this.amount,
-    required this.category,
-    required this.description,
     required this.date,
-  }) : id = id ?? DateTime.now().millisecondsSinceEpoch.toString();
+    required this.description,
+    required this.categoryId,
+  });
 
-  /// Format tanggal lokal (Indonesia)
-  String get formattedDate {
-    final formatter = DateFormat('dd MMM yyyy', 'id_ID');
-    return formatter.format(date);
-  }
+  String get type;
 
-  /// Waktu dalam format HH:mm
-  String get formattedTime {
-    return '${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
-  }
+  Map<String, dynamic> toMap();
+}
 
-  /// Jumlah dengan format Rp
-  String get formattedAmount {
-    final formatter = NumberFormat.currency(
-      locale: 'id_ID',
-      symbol: 'Rp ',
-      decimalDigits: 0,
+class Income extends Transaction {
+  Income({
+    int? id,
+    required double amount,
+    required DateTime date,
+    required String description,
+    required int categoryId,
+  }) : super(
+          id: id,
+          amount: amount,
+          date: date,
+          description: description,
+          categoryId: categoryId,
+        );
+
+  @override
+  String get type => 'Income';
+
+  factory Income.fromMap(Map<String, dynamic> map) {
+    return Income(
+      id: map['id'],
+      amount: map['amount'],
+      date: DateTime.parse(map['date']),
+      description: map['description'],
+      categoryId: map['categoryId'],
     );
-    return formatter.format(amount);
   }
 
-  /// Copy dengan field tertentu berubah
-  Transaction copyWith({
-    String? id,
-    double? amount,
-    TransactionCategory? category,
-    String? description,
-    DateTime? date,
-  }) {
-    return Transaction(
-      id: id ?? this.id,
-      amount: amount ?? this.amount,
-      category: category ?? this.category,
-      description: description ?? this.description,
-      date: date ?? this.date,
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'description': description,
+      'categoryId': categoryId,
+      'type': type,
+    };
+  }
+}
+
+class Expense extends Transaction {
+  Expense({
+    int? id,
+    required double amount,
+    required DateTime date,
+    required String description,
+    required int categoryId,
+  }) : super(
+          id: id,
+          amount: amount,
+          date: date,
+          description: description,
+          categoryId: categoryId,
+        );
+
+  @override
+  String get type => 'Expense';
+
+  factory Expense.fromMap(Map<String, dynamic> map) {
+    return Expense(
+      id: map['id'],
+      amount: map['amount'],
+      date: DateTime.parse(map['date']),
+      description: map['description'],
+      categoryId: map['categoryId'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'amount': amount,
+      'date': date.toIso8601String(),
+      'description': description,
+      'categoryId': categoryId,
+      'type': type,
+    };
   }
 }
