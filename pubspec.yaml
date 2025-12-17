@@ -13,24 +13,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+
   # Ikon
   cupertino_icons: ^1.0.8
-  
+
   # Formatting Tanggal dan Mata Uang (Sudah Anda masukkan)
-  intl: ^0.20.2 
-  
+  intl: ^0.20.2
+
   # Font (Sudah Anda masukkan)
   google_fonts: ^6.3.3
-  
+
   # --- Dependensi Tambahan untuk Aplikasi Keuangan ---
-  
+
   # Database Lokal
-  sqflite: ^2.3.0 
+  sqflite: ^2.3.0
+  path: ^1.9.0
   path_provider: ^2.1.1 # Diperlukan oleh sqflite
-  
+
   # Manajemen State
-  provider: ^6.0.5 
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

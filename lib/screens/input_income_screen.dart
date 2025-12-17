@@ -126,7 +126,7 @@ class _InputIncomeScreenState extends State<InputIncomeScreen> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
                 ),
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 hint: const Text('Pilih Kategori Pemasukan'),
                 items: financialManager.incomeCategories
                     .map((Category category) {

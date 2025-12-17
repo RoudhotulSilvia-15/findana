@@ -145,7 +145,7 @@ class _CategoryManagementScreenState extends State<CategoryManagementScreen>
         ? Center(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Text('Belum ada kategori ${_selectedType}. Silahkan tambahkan dengan menekan tombol (+) di bawah.'),
+              child: Text('Belum ada kategori $_selectedType. Silahkan tambahkan dengan menekan tombol (+) di bawah.'),
             ),
           )
         : ListView.builder(

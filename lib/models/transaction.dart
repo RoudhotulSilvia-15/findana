@@ -20,18 +20,12 @@ abstract class Transaction {
 
 class Income extends Transaction {
   Income({
-    int? id,
-    required double amount,
-    required DateTime date,
-    required String description,
-    required int categoryId,
-  }) : super(
-          id: id,
-          amount: amount,
-          date: date,
-          description: description,
-          categoryId: categoryId,
-        );
+    super.id,
+    required super.amount,
+    required super.date,
+    required super.description,
+    required super.categoryId,
+  });
 
   @override
   String get type => 'Income';
@@ -46,6 +40,7 @@ class Income extends Transaction {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -60,18 +55,12 @@ class Income extends Transaction {
 
 class Expense extends Transaction {
   Expense({
-    int? id,
-    required double amount,
-    required DateTime date,
-    required String description,
-    required int categoryId,
-  }) : super(
-          id: id,
-          amount: amount,
-          date: date,
-          description: description,
-          categoryId: categoryId,
-        );
+    super.id,
+    required super.amount,
+    required super.date,
+    required super.description,
+    required super.categoryId,
+  });
 
   @override
   String get type => 'Expense';
@@ -86,6 +75,7 @@ class Expense extends Transaction {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'id': id,

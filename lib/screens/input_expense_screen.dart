@@ -126,7 +126,7 @@ class _InputExpenseScreenState extends State<InputExpenseScreen> {
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
                 ),
-                value: _selectedCategory,
+                initialValue: _selectedCategory,
                 hint: const Text('Pilih Kategori Pengeluaran'),
                 items: financialManager.expenseCategories
                     .map((Category category) {

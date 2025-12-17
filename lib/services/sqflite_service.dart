@@ -1,32 +1,29 @@
-import 'package:sqflite/sqflite.dart' hide Transaction;
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+import 'package:sqflite/sqflite.dart' as sqf;
+import 'package:path/path.dart'; 
 
 import 'data_service.dart';
 import '../models/category.dart';
 import '../models/transaction.dart';
 
 class SqfliteService implements DataService {
-  static Database? _database;
+  static sqf.Database? _database;
 
-  Future<Database> get database async {
+  Future<sqf.Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDB();
     return _database!;
   }
 
-  Future<Database> _initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'findana.db');
-    return await openDatabase(
+  Future<sqf.Database> _initDB() async {
+    String path = join(await sqf.getDatabasesPath(), 'findana.db');
+    return await sqf.openDatabase(
       path,
       version: 1,
       onCreate: _onCreate,
     );
   }
 
-  Future<void> _onCreate(Database db, int version) async {
+  Future<void> _onCreate(sqf.Database db, int version) async {
     await db.execute('''
       CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -85,13 +82,15 @@ class SqfliteService implements DataService {
   Future<List<Transaction>> getAllTransactions() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('transactions');
-    return List.generate(maps.length, (i) {
-      if (maps[i]['type'] == 'Income') {
-        return Income.fromMap(maps[i]);
+    List<Transaction> transactions = [];
+    for (var map in maps) {
+      if (map['type'] == 'Income') {
+        transactions.add(Income.fromMap(map));
       } else {
-        return Expense.fromMap(maps[i]);
+        transactions.add(Expense.fromMap(map));
       }
-    });
+    }
+    return transactions;
   }
 
   @override
@@ -102,13 +101,15 @@ class SqfliteService implements DataService {
       orderBy: 'date DESC',
       limit: 10,
     );
-    return List.generate(maps.length, (i) {
-      if (maps[i]['type'] == 'Income') {
-        return Income.fromMap(maps[i]);
+    List<Transaction> transactions = [];
+    for (var map in maps) {
+      if (map['type'] == 'Income') {
+        transactions.add(Income.fromMap(map));
       } else {
-        return Expense.fromMap(maps[i]);
+        transactions.add(Expense.fromMap(map));
       }
-    });
+    }
+    return transactions;
   }
 
   @override
