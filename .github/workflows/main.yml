@@ -20,12 +20,13 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
       
-      # Setup Flutter
+    # Setup Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.27.1'
+          # Menggunakan versi terbaru di channel stable agar Dart SDK selalu update
           channel: 'stable'
+          cache: true
       
       # Disable analytics
       - name: Disable Flutter Analytics
